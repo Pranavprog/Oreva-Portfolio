@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Code } from 'lucide-react'; // Using Code as a placeholder for SIFT logo icon
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,57 +28,55 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Portfolio', href: '#portfolio' },
     { name: 'Services', href: '#services' },
+    { name: 'Portfolio', href: '#portfolio' },
     { name: 'Contact', href: '#contact' },
   ];
 
   return (
     <header 
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/80 backdrop-blur-md shadow-lg py-3' : 'py-6' // Using background with opacity
+        isScrolled ? 'bg-background/80 backdrop-blur-md shadow-lg py-4' : 'py-6 bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        <a href="#home" className="text-2xl font-bold text-white">
-          <span className="text-primary">P</span>ranav
+        <a href="#home" className="text-3xl font-bold text-white flex items-center">
+          <Code size={28} className="text-primary mr-2" /> {/* SIFT Logo placeholder */}
+          SIFT
         </a>
         
-        {/* Desktop navigation */}
-        <nav className="hidden md:flex space-x-1">
+        <nav className="hidden md:flex space-x-2">
           {navLinks.map((link) => (
             <a 
               key={link.name} 
               href={link.href}
-              className="nav-link" // nav-link class already uses primary for hover
+              className="nav-link" // Uses text-gray-300 hover:text-primary
             >
               {link.name}
             </a>
           ))}
         </nav>
         
-        {/* Mobile menu button */}
         <button 
           onClick={toggleMenu}
-          className="md:hidden text-gray-300 hover:text-white focus:outline-none"
+          className="md:hidden text-gray-300 hover:text-primary focus:outline-none"
           aria-label="Toggle menu"
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
       
-      {/* Mobile navigation */}
       <div 
-        className={`md:hidden absolute top-full left-0 w-full bg-background/90 backdrop-blur-md shadow-lg transition-all duration-300 ease-in-out ${ // Using background with opacity
-          isMenuOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+        className={`md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-md shadow-lg transition-all duration-300 ease-in-out ${
+          isMenuOpen ? 'max-h-[500px] opacity-100 py-2' : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
-        <nav className="flex flex-col p-4">
+        <nav className="flex flex-col px-4">
           {navLinks.map((link) => (
             <a 
               key={link.name} 
               href={link.href}
-              className="nav-link py-3 border-b border-border/50 last:border-none" // Use border color
+              className="nav-link text-lg py-3 border-b border-border/50 last:border-none"
               onClick={toggleMenu}
             >
               {link.name}

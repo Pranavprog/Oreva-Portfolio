@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Briefcase, LayoutGrid, Settings, Brain, Lightbulb } from 'lucide-react'; // Example icons
+import { LayoutGrid, Briefcase, Settings, Brain, Lightbulb, Code } from 'lucide-react'; // Added Code for Front-end
 
 interface Service {
   icon: React.ReactNode;
@@ -11,44 +11,54 @@ interface Service {
 const Services: React.FC = () => {
   const services: Service[] = [
     {
-      icon: <LayoutGrid size={32} />, // Using Lucide icon
-      title: "UI/UX Design",
-      description: "Professional wireframing, prototyping, and user testing to create intuitive and engaging user interfaces.",
+      icon: <LayoutGrid size={28} className="text-primary" />,
+      title: "UI/UX DESIGN",
+      description: "Crafting intuitive and engaging user interfaces through wireframing, prototyping, and user testing.",
     },
     {
-      icon: <Briefcase size={32} />, // Using Lucide icon
-      title: "Web Design & Development",
-      description: "Creating responsive websites with dynamic features and modern front-end technologies.",
+      icon: <Code size={28} className="text-primary" />,
+      title: "FRONT-END DEVELOPMENT",
+      description: "Building responsive and dynamic websites using modern front-end technologies.",
     },
     {
-      icon: <Settings size={32} />, // Using Lucide icon
-      title: "IoT Solutions & Consulting",
-      description: "Designing and implementing sensor-based smart systems with cloud integration for various applications.",
+      icon: <Briefcase size={28} className="text-primary" />,
+      title: "WEB DESIGN",
+      description: "Creating visually appealing and user-friendly websites tailored to your brand and goals.",
     },
     {
-      icon: <Brain size={32} />, // Using Lucide icon
-      title: "AI Integration & Prompt Engineering",
-      description: "Creating intelligent assistants and implementing NLP automation for businesses and projects.",
+      icon: <Settings size={28} className="text-primary" />,
+      title: "IOT SOLUTIONS",
+      description: "Designing smart, sensor-based systems with cloud integration for diverse applications.",
     },
     {
-      icon: <Lightbulb size={32} />, // Using Lucide icon
-      title: "Project Ideation & Innovation",
-      description: "Consulting on patentable product concepts and mentoring students and startups on innovation.",
+      icon: <Brain size={28} className="text-primary" />,
+      title: "AI INTEGRATION",
+      description: "Developing intelligent assistants and NLP automation for enhanced business processes.",
+    },
+    {
+      icon: <Lightbulb size={28} className="text-primary" />,
+      title: "INNOVATION CONSULTING",
+      description: "Guiding patentable product concepts and mentoring in technology innovation.",
     },
   ];
 
   return (
-    <section id="services" className="section-padding bg-background"> {/* Updated background */}
-      <div className="container mx-auto">
-        <h2 className="section-title text-center mb-16">My Services</h2>
+    <section id="services" className="section-padding bg-background">
+      <div className="container mx-auto text-center">
+        <p className="section-title-pretext justify-center">
+          <span className="text-primary text-2xl mr-2">*</span> MY SERVICE PROVIDE
+        </p>
+        <h2 className="section-title !text-3xl md:!text-4xl mb-16">
+          MY BEST QUALITY SERVICE
+        </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="animate-on-scroll solid-dark-card rounded-xl p-8 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10"
+              className="animate-on-scroll solid-dark-card rounded-xl p-8 text-left transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/20"
             >
-              <div className="w-16 h-16 rounded-lg bg-dark-contrast flex items-center justify-center text-primary mb-6"> {/* Icon container style from reference */}
+              <div className="mb-5">
                 {service.icon}
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>

@@ -1,61 +1,45 @@
 
 import React from 'react';
+import { Github, Linkedin, Instagram, Twitter } from 'lucide-react'; // Added Twitter as an example
 
 const Footer: React.FC = () => {
   const year = new Date().getFullYear();
   
+  const socialLinks = [
+    { name: "GitHub", icon: <Github size={20} />, href: "https://github.com/" },
+    { name: "LinkedIn", icon: <Linkedin size={20} />, href: "https://linkedin.com/in/" },
+    { name: "Instagram", icon: <Instagram size={20} />, href: "https://instagram.com/" },
+    // { name: "Twitter", icon: <Twitter size={20} />, href: "https://twitter.com/" }, // Example
+  ];
+
   return (
-    <footer className="bg-dark-blue border-t border-gray-800">
-      <div className="container mx-auto py-8 px-6 md:px-12">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0">
-            <a href="#" className="text-2xl font-bold text-white">
-              <span className="text-electric-blue">P</span>ranav
+    <footer className="bg-card border-t border-border/50"> {/* Changed bg to card */}
+      <div className="container mx-auto py-10 px-6 md:px-12 text-center">
+        <a href="#home" className="text-3xl font-bold text-white inline-block mb-4">
+          SIFT {/* Matches Navbar logo text */}
+        </a>
+        
+        <div className="flex justify-center space-x-5 mb-6">
+          {socialLinks.map(link => (
+            <a 
+              key={link.name}
+              href={link.href} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label={link.name}
+              className="text-gray-400 hover:text-primary transition-colors"
+            >
+              {link.icon}
             </a>
-            <p className="text-gray-400 mt-2">
-              Creating digital experiences that blend creativity and technology.
-            </p>
-          </div>
-          
-          <div className="flex flex-col items-center md:items-end">
-            <div className="flex space-x-4 mb-4">
-              <a 
-                href="#home" 
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Home
-              </a>
-              <a 
-                href="#about" 
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                About
-              </a>
-              <a 
-                href="#portfolio" 
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Portfolio
-              </a>
-              <a 
-                href="#services" 
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Services
-              </a>
-              <a 
-                href="#contact" 
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Contact
-              </a>
-            </div>
-            
-            <p className="text-gray-500 text-sm">
-              &copy; {year} Pranav Kumar. All rights reserved.
-            </p>
-          </div>
+          ))}
         </div>
+            
+        <p className="text-gray-500 text-sm">
+          &copy; {year} Pranav Kumar. All rights reserved.
+        </p>
+        <p className="text-gray-600 text-xs mt-1">
+          Inspired by SIFT template.
+        </p>
       </div>
     </footer>
   );

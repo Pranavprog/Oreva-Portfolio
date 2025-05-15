@@ -19,7 +19,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter var', 'sans-serif'],
+				sans: ['Inter', 'sans-serif'], // Updated to ensure Inter is primary sans
 				heading: ['Poppins', 'sans-serif'],
 			},
 			colors: {
@@ -67,10 +67,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				// Custom colors for Pranav's portfolio
-				'deep-dark': '#121212', // New very dark background
-				'lime-accent': '#A3E635', // New lime green accent (Tailwind lime-400)
-				'dark-contrast': '#1F2937', // A slightly lighter dark for cards/muted elements
-        'light-gray': '#D1D5DB', // For subtle text or borders
+				'deep-dark': '#080808', // Updated to match new background
+				'lime-accent': '#A3E635', 
+				'dark-contrast': '#0F0F0F', // Updated to match new card
+        'light-gray': '#D1D5DB',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -109,7 +109,11 @@ export default {
 				'spin-slow': {
 					'0%': { transform: 'rotate(0deg)' },
 					'100%': { transform: 'rotate(360deg)' }
-				}
+				},
+        'ping-slowly': { // New keyframe for subtle ping
+          '0%, 100%': { transform: 'scale(1)', opacity: '0.5' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.2' },
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -119,7 +123,8 @@ export default {
 				'fade-in-left': 'fade-in-left 0.7s ease-out forwards',
 				'float': 'float 6s ease-in-out infinite',
 				'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
-				'spin-slow': 'spin-slow 12s linear infinite'
+				'spin-slow': 'spin-slow 12s linear infinite',
+        'ping-slowly': 'ping-slowly 5s cubic-bezier(0, 0, 0.2, 1) infinite' // New animation
 			}
 		}
 	},
