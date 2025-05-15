@@ -36,12 +36,12 @@ const Navbar = () => {
   return (
     <header 
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-dark-blue/80 glassmorphism shadow-lg py-3' : 'py-6'
+        isScrolled ? 'bg-background/80 backdrop-blur-md shadow-lg py-3' : 'py-6' // Using background with opacity
       }`}
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        <a href="#" className="text-2xl font-bold text-white">
-          <span className="text-electric-blue">P</span>ranav
+        <a href="#home" className="text-2xl font-bold text-white">
+          <span className="text-primary">P</span>ranav
         </a>
         
         {/* Desktop navigation */}
@@ -50,7 +50,7 @@ const Navbar = () => {
             <a 
               key={link.name} 
               href={link.href}
-              className="nav-link"
+              className="nav-link" // nav-link class already uses primary for hover
             >
               {link.name}
             </a>
@@ -69,7 +69,7 @@ const Navbar = () => {
       
       {/* Mobile navigation */}
       <div 
-        className={`md:hidden absolute top-full left-0 w-full glassmorphism shadow-lg transition-all duration-300 ease-in-out ${
+        className={`md:hidden absolute top-full left-0 w-full bg-background/90 backdrop-blur-md shadow-lg transition-all duration-300 ease-in-out ${ // Using background with opacity
           isMenuOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
@@ -78,7 +78,7 @@ const Navbar = () => {
             <a 
               key={link.name} 
               href={link.href}
-              className="nav-link py-3 border-b border-gray-700/50 last:border-none"
+              className="nav-link py-3 border-b border-border/50 last:border-none" // Use border color
               onClick={toggleMenu}
             >
               {link.name}

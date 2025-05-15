@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -68,10 +67,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				// Custom colors for Pranav's portfolio
-				'dark-blue': '#0f172a',
-				'electric-blue': '#60a5fa',
-				'teal': '#14b8a6',
-				'neon-green': '#4ade80',
+				'deep-dark': '#121212', // New very dark background
+				'lime-accent': '#A3E635', // New lime green accent (Tailwind lime-400)
+				'dark-contrast': '#1F2937', // A slightly lighter dark for cards/muted elements
+        'light-gray': '#D1D5DB', // For subtle text or borders
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
