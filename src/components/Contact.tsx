@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Download, MapPin, Send } from 'lucide-react'; // MapPin for address, Send for button
+import emailjs from 'emailjs-com';
+import { Mail, Phone, Download, MapPin, Send } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '', // Added phone to match reference
+    phone: '',
     email: '',
     subject: '',
     message: '',
@@ -15,6 +16,8 @@ const Contact: React.FC = () => {
     type: '', // 'success' or 'error'
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -22,15 +25,43 @@ const Contact: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message || !formData.phone) { // Added phone validation
+    if (!formData.name || !formData.email || !formData.message || !formData.phone) {
       setFormStatus({ message: 'Please fill in all required fields.', type: 'error' });
+      setTimeout(() => setFormStatus({ message: '', type: '' }), 5000);
       return;
     }
-    // Simulate form submission
-    console.log("Form Data:", formData);
-    setFormStatus({ message: 'Message sent successfully! I will get back to you soon.', type: 'success' });
-    setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
-    setTimeout(() => setFormStatus({ message: '', type: '' }), 5000);
+
+    setIsSubmitting(true);
+    setFormStatus({ message: 'Sending message...', type: 'info' }); // Optional: info status
+
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      from_phone: formData.phone,
+      subject: formData.subject,
+      message: formData.message,
+      to_name: 'Pranav Kumar' // Or your name, as configured in your EmailJS template
+    };
+
+    // Replace with your actual Service ID, Template ID, and User ID (Public Key)
+    const SERVICE_ID = 'service_kossp09';
+    const TEMPLATE_ID = 'template_d2kzldj';
+    const USER_ID = '8VoR-ApzShoIQCUIk';
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, USER_ID)
+      .then((response) => {
+        console.log('EmailJS SUCCESS!', response.status, response.text);
+        setFormStatus({ message: 'Message sent successfully! I will get back to you soon.', type: 'success' });
+        setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
+      })
+      .catch((error) => {
+        console.error('EmailJS FAILED...', error);
+        setFormStatus({ message: 'Failed to send message. Please try again later.', type: 'error' });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        setTimeout(() => setFormStatus({ message: '', type: '' }), 5000);
+      });
   };
 
   const contactInfo = [
@@ -105,7 +136,7 @@ const Contact: React.FC = () => {
               </div>
               <div>
                 <label htmlFor="subject" className="sr-only">Subject</label>
-                <input type="text" name="subject" id="subject" placeholder="Subject" value={formData.subject} onChange={handleChange}
+                <input type="text" name="subject" id="subject" placeholder="Subject (Optional)" value={formData.subject} onChange={handleChange}
                        className="w-full bg-muted border-border px-4 py-3 rounded-md text-white placeholder-gray-500 focus:ring-primary focus:border-primary outline-none"/>
               </div>
               <div>
@@ -114,13 +145,13 @@ const Contact: React.FC = () => {
                           className="w-full bg-muted border-border px-4 py-3 rounded-md text-white placeholder-gray-500 focus:ring-primary focus:border-primary outline-none resize-none"></textarea>
               </div>
               {formStatus.message && (
-                <p className={`text-sm ${formStatus.type === 'error' ? 'text-red-400' : 'text-green-400'}`}>
+                <p className={`text-sm ${formStatus.type === 'error' ? 'text-red-400' : formStatus.type === 'success' ? 'text-green-400' : 'text-blue-400'}`}>
                   {formStatus.message}
                 </p>
               )}
               <div>
-                <button type="submit" className="btn-primary w-full flex items-center justify-center">
-                  Send Message <Send size={18} className="ml-2"/>
+                <button type="submit" className="btn-primary w-full flex items-center justify-center" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Send Message'} <Send size={18} className="ml-2"/>
                 </button>
               </div>
             </form>
