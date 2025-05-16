@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Download, Play } from 'lucide-react'; // Play icon for Play Video button
 
@@ -48,14 +47,18 @@ const Hero: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start animate-fade-in delay-500">
               <a 
-                href="#contact" 
+                href="https://drive.google.com/uc?export=download&id=1eeGookqESOmBBQDw5azpGr_tq5x9pWrC" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="btn-primary text-lg px-7 py-3.5" // Slightly larger padding
               >
                 <Download size={20} className="mr-2.5" /> {/* Adjusted margin */}
                 Download CV
               </a>
               <a 
-                href="#portfolio" 
+                href="https://vimeo.com/1084933368/18ba679585" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="btn-secondary text-lg px-7 py-3.5" // Slightly larger padding
               >
                 <Play size={20} className="mr-2.5" /> {/* Adjusted margin */}

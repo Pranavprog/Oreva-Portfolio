@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Mail, Phone, Download, MapPin, Send } from 'lucide-react'; // MapPin for address, Send for button
 
@@ -72,7 +71,12 @@ const Contact: React.FC = () => {
               ))}
             </div>
 
-            <a href="#cv-link-placeholder" className="btn-primary">
+            <a 
+              href="https://drive.google.com/uc?export=download&id=1eeGookqESOmBBQDw5azpGr_tq5x9pWrC" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
               <Download size={20} className="mr-2" />
               Download CV
             </a>
