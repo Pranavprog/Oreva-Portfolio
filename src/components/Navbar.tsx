@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Code } from 'lucide-react'; // Using Code as a placeholder for SIFT logo icon
+import { Menu, X, Code } from 'lucide-react'; // Using Code as a placeholder for PRANAV logo icon
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,9 +39,9 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        <a href="#home" className="text-3xl font-bold text-white flex items-center">
-          <Code size={28} className="text-primary mr-2" /> {/* SIFT Logo placeholder */}
-          SIFT
+        <a href="#home" className="text-3xl font-bold text-white flex items-center group">
+          <Code size={30} className="text-primary mr-2 group-hover:animate-pulse" /> {/* PRANAV Logo placeholder */}
+          <span className="font-heading tracking-wide">PRANAV</span>
         </a>
         
         <nav className="hidden md:flex space-x-2">

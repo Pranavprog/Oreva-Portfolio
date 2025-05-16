@@ -12,14 +12,14 @@ const About: React.FC = () => {
   ];
   
   const skills = [
-    { name: "Web Design", percentage: 90 },
-    { name: "Front-end Development", percentage: 85 },
-    { name: "UI/UX Design", percentage: 80 },
-    { name: "IoT Solutions", percentage: 75 },
-    { name: "AI Integration", percentage: 70 },
+    { name: "Web Design", percentage: 95 },
+    { name: "Competitive programming", percentage: 80 },
+    { name: "UI/UX Design", percentage: 90 },
+    { name: "IoT Solutions", percentage: 92.7 },
+    { name: "AI prompting", percentage: 99 },
   ];
 
-  const clubs = ["Google Developers Club", "ASPERA"];
+  const clubs = ["Google Developers Club", "ASPERA", "IEEE"];
 
   return (
     <section id="about" className="relative section-padding bg-background"> {/* Updated background */}
