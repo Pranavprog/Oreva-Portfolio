@@ -21,7 +21,7 @@ const Portfolio: React.FC = () => {
       title: "SANTRUPTHI",
       description: "Smart canopy for lactating mothers using automation and data collection.",
       category: "Innovation",
-      image: "https://via.placeholder.com/600x400?text=SANTRUPTHI",
+      image: "https://i.postimg.cc/FzdfwFfk/360-view.jpg", // Updated image
       tags: ["IoT", "Automation", "Healthcare"],
     },
     {
@@ -29,7 +29,7 @@ const Portfolio: React.FC = () => {
       title: "GitHub AI Auto-Issue Triage",
       description: "NLP-based automated issue resolution for GitHub repositories.",
       category: "AI",
-      image: "https://via.placeholder.com/600x400?text=GitHub+AI",
+      image: "https://i.postimg.cc/4dTXbzt0/git-hub.png", // Updated image
       tags: ["AI", "NLP", "Development Tool"],
     },
     {
@@ -37,7 +37,7 @@ const Portfolio: React.FC = () => {
       title: "Personal Portfolio Design",
       description: "Responsive portfolio website focused on modern UI/UX principles.",
       category: "Web",
-      image: "https://via.placeholder.com/600x400?text=Portfolio+Web",
+      image: "https://i.postimg.cc/K8NWsBdV/portfolio.png", // Updated image
       tags: ["Web Design", "UI/UX", "React"],
     },
     {
@@ -45,7 +45,7 @@ const Portfolio: React.FC = () => {
       title: "Smart Door Lock System",
       description: "IoT-based door lock with smartphone connectivity and security features.",
       category: "IoT",
-      image: "https://via.placeholder.com/600x400?text=Smart+Lock",
+      image: "https://i.postimg.cc/0Qg7YHVq/smart-lock.png", // Updated image
       tags: ["IoT", "Security", "Hardware"],
     },
     // ... Add more projects if needed, following the template of showing 4-6 main ones

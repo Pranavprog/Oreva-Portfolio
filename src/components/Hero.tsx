@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Download, Play } from 'lucide-react'; // Play icon for Play Video button
 
@@ -21,7 +22,7 @@ const Hero: React.FC = () => {
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 via-lime-500/20 to-green-500/20 opacity-40 blur-2xl animate-pulse-glow"></div>
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-primary/60 shadow-2xl animated-border">
                 <img 
-                  src="https://via.placeholder.com/400x400?text=Pranav" // User should replace with actual image
+                  src="https://i.postimg.cc/g0BmQfff/Whats-App-Image-2025-05-16-at-16-19-43-721f46dd.jpg" // Updated image
                   alt="Pranav Kumar"
                   className="w-full h-full object-cover"
                 />

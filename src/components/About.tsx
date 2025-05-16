@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { CheckCircle } from 'lucide-react'; // Icon for soft skills
 
@@ -32,7 +33,7 @@ const About: React.FC = () => {
             <div className="solid-dark-card p-6 rounded-xl w-full max-w-sm">
               <div className="w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden border-4 border-primary/30 mx-auto mb-6 shadow-lg">
                 <img 
-                  src="https://via.placeholder.com/300x300?text=Pranav" 
+                  src="https://i.postimg.cc/g0BmQfff/Whats-App-Image-2025-05-16-at-16-19-43-721f46dd.jpg" // Updated image
                   alt="Pranav Kumar"
                   className="w-full h-full object-cover"
                 />
