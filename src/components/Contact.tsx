@@ -45,7 +45,7 @@ const Contact: React.FC = () => {
 
     // Replace with your actual Service ID, Template ID, and User ID (Public Key)
     const SERVICE_ID = 'service_kossp09';
-    const TEMPLATE_ID = 'template_d2kzldj';
+    const TEMPLATE_ID = 'template_kxs7q6n'; // Updated Template ID
     const USER_ID = '8VoR-ApzShoIQCUIk';
 
     emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, USER_ID)
