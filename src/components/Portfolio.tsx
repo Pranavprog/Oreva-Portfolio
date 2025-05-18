@@ -1,18 +1,17 @@
-
-import React, { useState } from 'react';
-import { ArrowRight, ExternalLink } from 'lucide-react'; // Added ExternalLink, Eye icon is not used
-import ProjectDetailDialog from './ProjectDetailDialog'; // New component for the dialog
-import { Button } from "@/components/ui/button"; // For Dialog buttons if not handled by ProjectDetailDialog fully
+import React, { useState, useMemo } from 'react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
+import ProjectDetailDialog from './ProjectDetailDialog';
+import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 // Updated Project interface
 export interface Project {
   id: number;
   title: string;
-  description: string; // Short description for the card
+  description: string; 
   category: string;
-  image: string; // Main image for the card
+  image: string; 
   tags?: string[];
-  // New detailed fields
   longDescription: string;
   challenges?: string;
   solutions?: string;
@@ -25,6 +24,8 @@ export interface Project {
 const Portfolio: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [showAllProjects, setShowAllProjects] = useState(false);
 
   const projects: Project[] = [
     {
@@ -38,7 +39,7 @@ const Portfolio: React.FC = () => {
       challenges: "Key challenges included designing a cost-effective yet robust hardware solution, ensuring user privacy and data security, and developing an intuitive user interface.",
       solutions: "Utilized ESP32 microcontrollers for IoT connectivity, developed a custom mobile application for control, and implemented end-to-end encryption for data. The canopy design focused on modularity.",
       results: "The prototype received positive feedback for its utility and design. Future work includes integration with public health databases.",
-      liveLink: undefined, // "https://example.com/santrupthi-live",
+      liveLink: undefined, 
       repoLink: "https://github.com/example/santrupthi",
       galleryImages: [
         "https://i.postimg.cc/FzdfwFfk/360-view.jpg",
@@ -57,7 +58,7 @@ const Portfolio: React.FC = () => {
       challenges: "Accurately understanding the intent and severity of diverse issues, integrating seamlessly with GitHub's ecosystem, and training a reliable NLP model were significant hurdles.",
       solutions: "Implemented a pipeline using BERT-based models for issue classification and keyword extraction. Used GitHub Actions for automation and a web dashboard for maintainers to review AI suggestions.",
       results: "Early tests showed a 40% reduction in manual triage time for maintainers on pilot repositories.",
-      liveLink: undefined, //"https://example.com/ai-triage-demo",
+      liveLink: undefined, 
       repoLink: "https://github.com/example/ai-issue-triage",
       galleryImages: [
         "https://i.postimg.cc/4dTXbzt0/git-hub.png",
@@ -75,8 +76,8 @@ const Portfolio: React.FC = () => {
       challenges: "Ensuring optimal performance across devices, creating a unique visual identity, and implementing smooth animations without compromising accessibility.",
       solutions: "Built with React and Tailwind CSS for a highly customizable and responsive layout. Utilized TypeScript for type safety and Vite for a fast development experience. Animations were carefully chosen and implemented using CSS transitions and Framer Motion (example).",
       results: "A visually appealing and performant portfolio site that effectively communicates skills and project work. Continuously updated with new projects and features.",
-      liveLink: "#", // Link to the current site
-      repoLink: undefined, // "https://github.com/example/personal-portfolio",
+      liveLink: "#", 
+      repoLink: undefined, 
       galleryImages: [
         "https://i.postimg.cc/K8NWsBdV/portfolio.png",
         "https://via.placeholder.com/400x300.png?text=Portfolio+Mobile+View",
@@ -108,7 +109,26 @@ const Portfolio: React.FC = () => {
     setIsDetailDialogOpen(true);
   };
 
-  const displayedProjects = projects.slice(0, 4);
+  const allTags = useMemo(() => {
+    const tagsSet = new Set<string>();
+    projects.forEach(project => {
+      project.tags?.forEach(tag => tagsSet.add(tag));
+    });
+    return Array.from(tagsSet).sort();
+  }, [projects]);
+
+  const filteredProjects = useMemo(() => {
+    if (!selectedTag) {
+      return projects;
+    }
+    return projects.filter(project => project.tags?.includes(selectedTag));
+  }, [projects, selectedTag]);
+
+  const displayedProjects = showAllProjects ? filteredProjects : filteredProjects.slice(0, 4);
+
+  const handleToggleShowAll = () => {
+    setShowAllProjects(prev => !prev);
+  };
 
   return (
     <section id="portfolio" className="section-padding bg-background">
@@ -116,10 +136,39 @@ const Portfolio: React.FC = () => {
         <p className="section-title-pretext justify-center">
           <span className="text-primary text-2xl mr-2">*</span> PROJECTS FEATURES
         </p>
-        <h2 className="section-title !text-3xl md:!text-4xl mb-16">
+        <h2 className="section-title !text-3xl md:!text-4xl mb-8">
           OUR FEATURES PROJECTS
         </h2>
+
+        {/* Filter Buttons */}
+        <div className="mb-10 flex justify-center flex-wrap gap-2">
+          <ToggleGroup 
+            type="single" 
+            value={selectedTag || "all"}
+            onValueChange={(value) => {
+              if (value === "all" || !value) { // Handle case where value could be empty string if no item is selected
+                setSelectedTag(null);
+              } else {
+                setSelectedTag(value);
+              }
+            }}
+            className="flex-wrap justify-center"
+          >
+            <ToggleGroupItem value="all" aria-label="All projects" className="border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10">
+              All
+            </ToggleGroupItem>
+            {allTags.map(tag => (
+              <ToggleGroupItem key={tag} value={tag} aria-label={`Filter by ${tag}`} className="border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10">
+                {tag}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
         
+        {filteredProjects.length === 0 && selectedTag && (
+          <p className="text-gray-400 mb-12">No projects found for the tag "{selectedTag}".</p>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {displayedProjects.map((project) => (
             <div key={project.id} className="animate-on-scroll group solid-dark-card rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 hover:transform hover:-translate-y-2">
@@ -144,7 +193,7 @@ const Portfolio: React.FC = () => {
                 </p>
                 {project.tags && (
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.slice(0,3).map(tag => ( // Show limited tags on card
+                    {project.tags.slice(0,3).map(tag => (
                       <span key={tag} className="text-xs bg-muted px-2 py-1 rounded text-gray-300">{tag}</span>
                     ))}
                   </div>
@@ -160,9 +209,23 @@ const Portfolio: React.FC = () => {
           ))}
         </div>
         
-        <a href="#" className="btn-primary">
-           View More Project
-        </a>
+        {filteredProjects.length > 4 && (
+          <button onClick={handleToggleShowAll} className="btn-primary">
+             {showAllProjects ? 'Show Less Projects' : `View More Projects (${filteredProjects.length - 4} more)`}
+          </button>
+        )}
+         {/* If less than 4 projects or all shown, and original more than 4, link to all projects page (future) */}
+        {(filteredProjects.length <= 4 || showAllProjects) && projects.length > 4 && !showAllProjects && filteredProjects.length > 0 && (
+           <button onClick={handleToggleShowAll} className="btn-primary">
+            View All {filteredProjects.length > 0 ? filteredProjects.length : ''} Projects
+           </button>
+        )}
+         {/* Fallback to old button if no filtering applied and initial projects > 4 */}
+        {filteredProjects.length === projects.length && projects.length > 4 && !showAllProjects && (
+            <button onClick={handleToggleShowAll} className="btn-primary">
+                View More Projects
+            </button>
+        )}
       </div>
       <ProjectDetailDialog 
         project={selectedProject}
