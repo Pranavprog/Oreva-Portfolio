@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import type { Project } from './Portfolio'; // Ensure Project type is imported
+import type { Project } from '../data/projectsData'; // Updated import path for Project type
 
 interface ProjectCardProps {
   project: Project;
