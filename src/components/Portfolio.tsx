@@ -140,13 +140,12 @@ const Portfolio: React.FC = () => {
           OUR FEATURES PROJECTS
         </h2>
 
-        {/* Filter Buttons */}
         <div className="mb-10 flex justify-center flex-wrap gap-2">
           <ToggleGroup 
             type="single" 
             value={selectedTag || "all"}
             onValueChange={(value) => {
-              if (value === "all" || !value) { // Handle case where value could be empty string if no item is selected
+              if (value === "all" || !value) { 
                 setSelectedTag(null);
               } else {
                 setSelectedTag(value);
@@ -171,7 +170,10 @@ const Portfolio: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {displayedProjects.map((project) => (
-            <div key={project.id} className="animate-on-scroll group solid-dark-card rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 hover:transform hover:-translate-y-2">
+            <div 
+              key={project.id} 
+              className="animate-on-scroll group solid-dark-card rounded-lg overflow-hidden transition-all duration-300 ease-out hover:shadow-2xl hover:shadow-primary/20 [perspective:1000px] hover:transform hover:-translate-y-1 hover:scale-[1.03] hover:rotate-x-[2deg] hover:-rotate-y-[2deg]"
+            >
               <div className="relative overflow-hidden h-64 md:h-72">
                 <img 
                   src={project.image} 
@@ -214,13 +216,11 @@ const Portfolio: React.FC = () => {
              {showAllProjects ? 'Show Less Projects' : `View More Projects (${filteredProjects.length - 4} more)`}
           </button>
         )}
-         {/* If less than 4 projects or all shown, and original more than 4, link to all projects page (future) */}
         {(filteredProjects.length <= 4 || showAllProjects) && projects.length > 4 && !showAllProjects && filteredProjects.length > 0 && (
            <button onClick={handleToggleShowAll} className="btn-primary">
             View All {filteredProjects.length > 0 ? filteredProjects.length : ''} Projects
            </button>
         )}
-         {/* Fallback to old button if no filtering applied and initial projects > 4 */}
         {filteredProjects.length === projects.length && projects.length > 4 && !showAllProjects && (
             <button onClick={handleToggleShowAll} className="btn-primary">
                 View More Projects

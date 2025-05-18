@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { LayoutGrid, Briefcase, Settings, Brain, Lightbulb, Code } from 'lucide-react'; // Added Code for Front-end
+import { LayoutGrid, Briefcase, Settings, Brain, Lightbulb, Code } from 'lucide-react';
 
 interface Service {
   icon: React.ReactNode;
@@ -56,7 +55,7 @@ const Services: React.FC = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="animate-on-scroll solid-dark-card rounded-xl p-8 text-left transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/20"
+              className="animate-on-scroll solid-dark-card rounded-xl p-8 text-left transition-all duration-300 ease-out hover:shadow-xl hover:shadow-primary/20 [perspective:1000px] hover:transform hover:-translate-y-1 hover:scale-[1.03] hover:rotate-x-[2deg] hover:-rotate-y-[2deg]"
             >
               <div className="mb-5">
                 {service.icon}
