@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import type { Project } from "./Portfolio"; // Import the Project interface
+import type { Project } from '../data/projectsData'; // Corrected import path
 
 interface ProjectDetailDialogProps {
   project: Project | null;
