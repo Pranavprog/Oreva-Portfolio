@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutGrid, Briefcase, Settings, Brain, Lightbulb, Code } from 'lucide-react';
 import {
   Dialog,
@@ -9,16 +9,22 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 interface Service {
   icon: React.ReactNode;
   title: string;
   description: string;
-  detailedDescription: string; // Added for more details
+  detailedDescription: string;
 }
 
 const Services: React.FC = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: false
+  });
 
   const services: Service[] = [
     {
@@ -76,47 +82,218 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
     },
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { y: 50, opacity: 0, rotateY: -15, rotateX: 15 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      rotateY: 0, 
+      rotateX: 0,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.5
+      }
+    },
+    hover: {
+      scale: 1.05,
+      rotateY: 5,
+      rotateX: -5,
+      boxShadow: "0px 10px 20px rgba(163, 230, 53, 0.3)",
+      transition: { type: "spring", stiffness: 300, damping: 15 }
+    },
+    tap: {
+      scale: 0.98,
+      rotateY: 0,
+      rotateX: 0,
+      transition: { type: "spring", stiffness: 400, damping: 10 }
+    }
+  };
+
+  const iconVariants = {
+    initial: { scale: 1 },
+    hover: { 
+      scale: 1.2,
+      rotate: 5,
+      color: "#c1ff72",
+      transition: { yoyo: Infinity, duration: 1.5 }
+    }
+  };
+
+  // Parallax effect for cards
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!inView) return;
+      
+      document.querySelectorAll('.service-card').forEach(card => {
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        const cardCenterX = rect.left + rect.width / 2;
+        const cardCenterY = rect.top + rect.height / 2;
+        
+        // Calculate distance from mouse to card center
+        const distanceX = e.clientX - cardCenterX;
+        const distanceY = e.clientY - cardCenterY;
+        
+        // Apply subtle rotation based on mouse position (limited effect)
+        const rotateY = distanceX * 0.01; 
+        const rotateX = -distanceY * 0.01;
+        
+        (card as HTMLElement).style.transform = 
+          `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [inView]);
+
   return (
-    <section id="services" className="section-padding bg-background">
+    <section id="services" className="section-padding bg-background overflow-hidden">
       <div className="container mx-auto text-center">
-        <p className="section-title-pretext justify-center">
-          <span className="text-primary text-2xl mr-2">*</span> MY SERVICE PROVIDE
-        </p>
-        <h2 className="section-title !text-3xl md:!text-4xl mb-16">
+        <motion.p 
+          className="section-title-pretext justify-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="text-primary text-2xl mr-2 animate-pulse-glow">*</span> MY SERVICE PROVIDE
+        </motion.p>
+        <motion.h2 
+          className="section-title !text-3xl md:!text-4xl mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           MY BEST QUALITY SERVICE
-        </h2>
+        </motion.h2>
         
         <Dialog open={!!selectedService} onOpenChange={(isOpen) => { if (!isOpen) setSelectedService(null); }}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            ref={ref}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+          >
             {services.map((service, index) => (
               <DialogTrigger key={index} asChild onClick={() => setSelectedService(service)}>
-                <div 
-                  className="animate-on-scroll solid-dark-card rounded-xl p-8 text-left transition-all duration-300 ease-out hover:shadow-xl hover:shadow-primary/20 [perspective:1000px] hover:transform hover:-translate-y-1 hover:scale-[1.03] hover:rotate-x-[2deg] hover:-rotate-y-[2deg] cursor-pointer"
+                <motion.div 
+                  className="service-card solid-dark-card rounded-xl p-8 text-left cursor-pointer"
+                  style={{ transformStyle: "preserve-3d" }}
+                  variants={cardVariants}
+                  whileHover="hover"
+                  whileTap="tap"
                 >
-                  <div className="mb-5">
+                  <motion.div className="mb-5" variants={iconVariants} whileHover="hover">
                     {service.icon}
+                  </motion.div>
+                  <motion.h3 
+                    className="text-xl font-semibold text-white mb-3"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                  >
+                    {service.title}
+                  </motion.h3>
+                  <motion.p 
+                    className="text-gray-400 text-sm leading-relaxed"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                  >
+                    {service.description}
+                  </motion.p>
+                  
+                  {/* 3D layered elements */}
+                  <motion.div 
+                    className="absolute -bottom-1 -right-1 w-20 h-20 opacity-20" 
+                    style={{ 
+                      transform: "translateZ(-10px)",
+                      background: "linear-gradient(135deg, transparent, rgba(163, 230, 53, 0.3))",
+                      borderRadius: "50%",
+                      filter: "blur(8px)"
+                    }}
+                  />
+                  
+                  {/* Floating particles effect */}
+                  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(5)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 bg-primary rounded-full opacity-20"
+                        initial={{ 
+                          x: Math.random() * 100 - 50, 
+                          y: Math.random() * 100 - 50,
+                          opacity: 0.1
+                        }}
+                        animate={{ 
+                          x: Math.random() * 100 - 50, 
+                          y: Math.random() * 100 - 50,
+                          opacity: [0.1, 0.3, 0.1]
+                        }}
+                        transition={{ 
+                          duration: 3 + Math.random() * 3,
+                          repeat: Infinity,
+                          repeatType: "reverse"
+                        }}
+                      />
+                    ))}
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{service.description}</p>
-                </div>
+                </motion.div>
               </DialogTrigger>
             ))}
-          </div>
+          </motion.div>
 
           {selectedService && (
             <DialogContent className="sm:max-w-[525px] bg-card border-border text-foreground">
-              <DialogHeader>
-                <div className="flex items-center mb-4">
-                  <div className="mr-4 text-primary">
-                    {/* Re-render the icon in the dialog */}
-                    {React.cloneElement(selectedService.icon as React.ReactElement, { size: 32 })}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <DialogHeader>
+                  <div className="flex items-center mb-4">
+                    <motion.div 
+                      className="mr-4 text-primary"
+                      initial={{ scale: 0.8, rotate: -10 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 200 }}
+                    >
+                      {React.cloneElement(selectedService.icon as React.ReactElement, { size: 32 })}
+                    </motion.div>
+                    <DialogTitle className="text-2xl font-bold text-white">
+                      <motion.span
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        {selectedService.title}
+                      </motion.span>
+                    </DialogTitle>
                   </div>
-                  <DialogTitle className="text-2xl font-bold text-white">{selectedService.title}</DialogTitle>
-                </div>
-                <DialogDescription className="text-gray-300 text-sm text-left whitespace-pre-line leading-relaxed pt-2 max-h-[60vh] overflow-y-auto">
-                  {selectedService.detailedDescription}
-                </DialogDescription>
-              </DialogHeader>
+                  <DialogDescription className="text-gray-300 text-sm text-left whitespace-pre-line leading-relaxed pt-2 max-h-[60vh] overflow-y-auto">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      {selectedService.detailedDescription}
+                    </motion.div>
+                  </DialogDescription>
+                </DialogHeader>
+              </motion.div>
             </DialogContent>
           )}
         </Dialog>
@@ -126,4 +303,3 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
 };
 
 export default Services;
-
