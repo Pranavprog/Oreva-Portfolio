@@ -33,8 +33,6 @@ export const projects: Project[] = [
     repoLink: "https://github.com/example/santrupthi",
     galleryImages: [
       "https://i.postimg.cc/FzdfwFfk/360-view.jpg",
-      "https://via.placeholder.com/400x300.png?text=Santrupthi+UI",
-      "https://via.placeholder.com/400x300.png?text=Santrupthi+Hardware",
       "https://i.postimg.cc/qvk99cjN/3.png",
       "https://i.postimg.cc/tRNk8Kfz/1.png"
     ],
@@ -54,7 +52,6 @@ export const projects: Project[] = [
     repoLink: "https://github.com/example/ai-issue-triage",
     galleryImages: [
       "https://i.postimg.cc/4dTXbzt0/git-hub.png",
-      "https://via.placeholder.com/400x300.png?text=AI+Triage+Dashboard",
       "https://i.postimg.cc/Bn6KYk9t/unnamed.png"
     ],
   },
@@ -73,8 +70,6 @@ export const projects: Project[] = [
     repoLink: undefined,
     galleryImages: [
       "https://i.postimg.cc/K8NWsBdV/portfolio.png",
-      "https://via.placeholder.com/400x300.png?text=Portfolio+Mobile+View",
-      "https://via.placeholder.com/400x300.png?text=Portfolio+Dark+Mode",
       "https://i.postimg.cc/YCDkqmmd/unnamed.png",
       "https://i.postimg.cc/xCxFLKnZ/unnamed.png"
     ],
@@ -94,8 +89,8 @@ export const projects: Project[] = [
     repoLink: "https://github.com/example/smart-door-lock",
     galleryImages: [
       "https://i.postimg.cc/0Qg7YHVq/smart-lock.png",
-      "https://via.placeholder.com/400x300.png?text=Smart+Lock+App+UI",
       "https://i.postimg.cc/76cHLJG3/unnamed.png"
     ],
   },
 ];
+
