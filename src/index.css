@@ -58,13 +58,72 @@
 
 @layer components {
   .solid-dark-card {
-    @apply bg-card text-card-foreground rounded-lg shadow-lg border border-border;
+    @apply bg-card text-card-foreground rounded-lg shadow-2xl border border-border; /* Changed shadow-lg to shadow-2xl */
   }
   
   .section-padding {
     @apply py-16 px-4 sm:px-6 lg:py-24 lg:px-8; /* Adjusted padding */
   }
   
+  /* Removing the old underline style for section-title */
+  /* .section-title::after removed */
+
+  .animated-border {
+    @apply relative;
+  }
+  
+  .animated-border::before {
+    @apply content-[''] absolute inset-0 border-2 border-transparent;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), #4ade80) border-box; 
+    -webkit-mask: 
+       linear-gradient(#fff 0 0) padding-box, 
+       linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-animation 4s linear infinite;
+    border-radius: inherit;
+    z-index: -1;
+  }
+  
+  @keyframes border-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 130% 50%;
+    }
+  }
+  
+  .nav-link {
+    @apply relative overflow-hidden text-gray-300 hover:text-primary transition-colors duration-300 px-3 py-2 font-medium; /* Adjusted hover and default text */
+  }
+  
+  .nav-link::after {
+    @apply content-[''] absolute bottom-0 left-0 w-0 h-[2px] bg-primary transition-all duration-300 ease-in-out;
+  }
+  
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+  
+  .nav-link.active {
+    @apply text-primary; /* Active link is primary color */
+  }
+
+  /* Custom button style to match reference */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-background bg-primary hover:bg-lime-500 transition-colors duration-300 transform hover:scale-105;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-primary text-base font-medium rounded-md text-primary bg-transparent hover:bg-primary hover:text-background transition-colors duration-300 transform hover:scale-105;
+  }
+
+  /* Decorative asterisk-like shape */
+  .deco-asterisk {
+    @apply text-primary absolute text-5xl opacity-30;
+    /* Example positioning, will need to be adjusted per component */
+  }
   .section-title-pretext { /* For the small text above the main title, e.g., "* ABOUT ME" */
     @apply text-sm font-medium text-primary uppercase tracking-wider mb-2 flex items-center;
   }
@@ -148,7 +207,45 @@
   transform: translateY(0) scale(1); /* Animate scale back to 1 */
 }
 
-/* ... keep existing code (delay classes) */
+.delay-100 {
+  transition-delay: 0.1s;
+}
+
+.delay-200 {
+  transition-delay: 0.2s;
+}
+
+.delay-300 {
+  transition-delay: 0.3s;
+}
+
+.delay-400 {
+  transition-delay: 0.4s;
+}
+
+.delay-500 {
+  transition-delay: 0.5s;
+}
+
+.delay-600 {
+  transition-delay: 0.6s;
+}
+
+.delay-700 {
+  transition-delay: 0.7s;
+}
+
+.delay-800 {
+  transition-delay: 0.8s;
+}
+
+.delay-900 {
+  transition-delay: 0.9s;
+}
+
+.delay-1000 {
+  transition-delay: 1s;
+}
 
 #particles-js {
   position: absolute;
@@ -160,4 +257,23 @@
   pointer-events: none;
 }
 
-/* ... keep existing code (scrollbar styles) */
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #5a687e;
+}
