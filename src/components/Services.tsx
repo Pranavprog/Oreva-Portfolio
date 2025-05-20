@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { LayoutGrid, Briefcase, Settings, Brain, Lightbulb, Code } from 'lucide-react';
 import {
@@ -88,51 +87,70 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
       }
     }
   };
 
   const cardVariants = {
-    hidden: { y: 50, opacity: 0, rotateY: -15, rotateX: 15 },
+    hidden: { y: 50, opacity: 0, rotateY: -20, rotateX: 15, z: -50 },
     visible: { 
       y: 0, 
       opacity: 1, 
       rotateY: 0, 
       rotateX: 0,
+      z: 0,
       transition: { 
         type: "spring",
-        stiffness: 100,
-        damping: 12,
-        duration: 0.5
+        stiffness: 80, // Softer spring for initial appearance
+        damping: 15,
+        duration: 0.6
       }
     },
     hover: {
-      scale: 1.05,
-      rotateY: 5,
-      rotateX: -5,
-      boxShadow: "0px 10px 20px rgba(163, 230, 53, 0.3)",
-      transition: { type: "spring", stiffness: 300, damping: 15 }
+      scale: 1.08,
+      rotateY: 8, // Adjusted for a slightly more subtle but clear 3D effect
+      rotateX: -6,
+      z: 30, // Lift the card more
+      boxShadow: "0px 20px 40px hsla(var(--primary), 0.5)", // More pronounced primary glow
+      transition: { type: "spring", stiffness: 200, damping: 15 }
     },
     tap: {
-      scale: 0.98,
+      scale: 0.96,
       rotateY: 0,
       rotateX: 0,
-      transition: { type: "spring", stiffness: 400, damping: 10 }
+      z: 10, // Push in slightly
+      boxShadow: "0px 10px 20px hsla(var(--primary), 0.3)",
+      transition: { type: "spring", stiffness: 350, damping: 10 }
     }
   };
 
-  const iconVariants = {
-    initial: { scale: 1 },
+  const iconContainerVariants = { // Renamed from iconVariants for clarity
+    initial: { scale: 1, rotateY: 0, rotateZ: 0 },
     hover: { 
-      scale: 1.2,
-      rotate: 5,
-      color: "#c1ff72",
-      transition: { yoyo: Infinity, duration: 1.5 }
+      scale: 1.25,
+      rotateY: 25,
+      rotateZ: -8,
+      filter: "drop-shadow(0 0 12px hsl(var(--primary))) drop-shadow(0 0 6px hsla(var(--primary), 0.7))",
+      transition: { yoyo: Infinity, duration: 1.0, type: "spring", stiffness: 180, damping: 12 }
     }
   };
 
-  // Parallax effect for cards
+  const serviceTitleVariants = {
+    initial: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 150, damping: 15, delay: 0.1 } },
+    hover: { y: -8, x: 3, scale: 1.03, color: "hsl(var(--primary))", transition: { type: "spring", stiffness: 250, damping: 12 } }
+  };
+
+  const serviceDescriptionVariants = {
+    initial: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 150, damping: 15, delay: 0.2 } },
+    hover: { y: 6, x: -3, transition: { type: "spring", stiffness: 250, damping: 12 } }
+  };
+
+  // Parallax effect for cards - Commented out to let Framer Motion handle transforms primarily
+  /*
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!inView) return;
@@ -142,11 +160,9 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
         const cardCenterX = rect.left + rect.width / 2;
         const cardCenterY = rect.top + rect.height / 2;
         
-        // Calculate distance from mouse to card center
         const distanceX = e.clientX - cardCenterX;
         const distanceY = e.clientY - cardCenterY;
         
-        // Apply subtle rotation based on mouse position (limited effect)
         const rotateY = distanceX * 0.01; 
         const rotateX = -distanceY * 0.01;
         
@@ -158,6 +174,7 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [inView]);
+  */
 
   return (
     <section id="services" className="section-padding bg-background overflow-hidden">
@@ -165,7 +182,7 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
         <motion.p 
           className="section-title-pretext justify-center"
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
           transition={{ duration: 0.6 }}
         >
           <span className="text-primary text-2xl mr-2 animate-pulse-glow">*</span> MY SERVICE PROVIDE
@@ -173,7 +190,7 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
         <motion.h2 
           className="section-title !text-3xl md:!text-4xl mb-16"
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           MY BEST QUALITY SERVICE
@@ -191,62 +208,77 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
               <DialogTrigger key={index} asChild onClick={() => setSelectedService(service)}>
                 <motion.div 
                   className="service-card solid-dark-card rounded-xl p-8 text-left cursor-pointer"
-                  style={{ transformStyle: "preserve-3d" }}
+                  style={{ transformStyle: "preserve-3d" }} // Crucial for 3D child elements
                   variants={cardVariants}
+                  // `initial` and `animate` are inherited from parent `motion.div` with `containerVariants`
+                  // `whileHover` and `whileTap` will apply the specific states from `cardVariants`
                   whileHover="hover"
                   whileTap="tap"
                 >
-                  <motion.div className="mb-5" variants={iconVariants} whileHover="hover">
+                  <motion.div 
+                    className="mb-5 inline-block" // inline-block so transform origin is centered better
+                    variants={iconContainerVariants}
+                    // Removed whileHover here, hover on card should trigger icon animation via variant inheritance if needed
+                    // For icon to animate specifically on its hover, it needs its own whileHover. 
+                    // Let's keep it simple: icon animates when card is hovered.
+                  >
                     {service.icon}
                   </motion.div>
                   <motion.h3 
                     className="text-xl font-semibold text-white mb-3"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
+                    variants={serviceTitleVariants}
+                    // initial="initial" and animate="visible" will be driven by parent containerVariants stagger.
                   >
                     {service.title}
                   </motion.h3>
                   <motion.p 
                     className="text-gray-400 text-sm leading-relaxed"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 + index * 0.1 }}
+                    variants={serviceDescriptionVariants}
+                    // initial="initial" and animate="visible" will be driven by parent containerVariants stagger.
                   >
                     {service.description}
                   </motion.p>
                   
-                  {/* 3D layered elements */}
                   <motion.div 
                     className="absolute -bottom-1 -right-1 w-20 h-20 opacity-20" 
                     style={{ 
-                      transform: "translateZ(-10px)",
+                      // transform: "translateZ(-10px)", // Let Framer Motion handle Z
                       background: "linear-gradient(135deg, transparent, rgba(163, 230, 53, 0.3))",
                       borderRadius: "50%",
                       filter: "blur(8px)"
                     }}
+                    initial={{ z: -20, opacity: 0.1 }} // Start further back and less visible
+                    animate={{ z: -10, opacity: 0.2 }} // Bring slightly forward on card visible
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
                   />
                   
-                  {/* Floating particles effect */}
                   <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(6)].map((_, i) => ( // Increased particle count slightly
                       <motion.div
                         key={i}
-                        className="absolute w-2 h-2 bg-primary rounded-full opacity-20"
+                        className="absolute w-1.5 h-1.5 bg-primary rounded-full" // Slightly smaller particles
+                        style={{ 
+                          // Let framer motion x,y,z props handle positioning
+                          top: `${Math.random() * 100}%`, // Spread across card height
+                          left: `${Math.random() * 100}%`, // Spread across card width
+                        }}
                         initial={{ 
-                          x: Math.random() * 100 - 50, 
-                          y: Math.random() * 100 - 50,
-                          opacity: 0.1
+                          opacity: 0,
+                          scale: 0.5,
+                          z: Math.random() * 40 - 20 // Varying Z depth
                         }}
                         animate={{ 
-                          x: Math.random() * 100 - 50, 
-                          y: Math.random() * 100 - 50,
-                          opacity: [0.1, 0.3, 0.1]
+                          opacity: [0, 0.3, 0.3, 0], // Fade in and out
+                          scale: [0.5, 1, 0.5],
+                          x: Math.random() * 60 - 30, // Random drift horizontally
+                          y: Math.random() * 60 - 30, // Random drift vertically
+                          z: Math.random() * 50 - 25, // Varying Z depth, slightly more range
                         }}
                         transition={{ 
-                          duration: 3 + Math.random() * 3,
+                          duration: 4 + Math.random() * 4,
                           repeat: Infinity,
-                          repeatType: "reverse"
+                          repeatType: "mirror", // "mirror" for smoother looping
+                          delay: i * 0.3 // Stagger particle animations
                         }}
                       />
                     ))}
