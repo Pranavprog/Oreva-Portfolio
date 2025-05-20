@@ -22,7 +22,7 @@ const Services: React.FC = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const { ref, inView } = useInView({
     threshold: 0.1,
-    triggerOnce: false
+    triggerOnce: false // Set to false to re-animate on scroll in/out, true to animate only once
   });
 
   const services: Service[] = [
@@ -87,8 +87,8 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
+        staggerChildren: 0, // Changed from 0.2 to 0
+        delayChildren: 0,   // Changed from 0.1 to 0 (or remove if staggerChildren is 0)
       }
     }
   };
@@ -200,7 +200,7 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
           <motion.div 
             ref={ref}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={containerVariants}
+            variants={containerVariants} // This uses the updated variants
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
           >
@@ -208,33 +208,26 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
               <DialogTrigger key={index} asChild onClick={() => setSelectedService(service)}>
                 <motion.div 
                   className="service-card solid-dark-card rounded-xl p-8 text-left cursor-pointer"
-                  style={{ transformStyle: "preserve-3d" }} // Crucial for 3D child elements
+                  style={{ transformStyle: "preserve-3d" }} 
                   variants={cardVariants}
-                  // `initial` and `animate` are inherited from parent `motion.div` with `containerVariants`
-                  // `whileHover` and `whileTap` will apply the specific states from `cardVariants`
                   whileHover="hover"
                   whileTap="tap"
                 >
                   <motion.div 
-                    className="mb-5 inline-block" // inline-block so transform origin is centered better
+                    className="mb-5 inline-block" 
                     variants={iconContainerVariants}
-                    // Removed whileHover here, hover on card should trigger icon animation via variant inheritance if needed
-                    // For icon to animate specifically on its hover, it needs its own whileHover. 
-                    // Let's keep it simple: icon animates when card is hovered.
                   >
                     {service.icon}
                   </motion.div>
                   <motion.h3 
                     className="text-xl font-semibold text-white mb-3"
                     variants={serviceTitleVariants}
-                    // initial="initial" and animate="visible" will be driven by parent containerVariants stagger.
                   >
                     {service.title}
                   </motion.h3>
                   <motion.p 
                     className="text-gray-400 text-sm leading-relaxed"
                     variants={serviceDescriptionVariants}
-                    // initial="initial" and animate="visible" will be driven by parent containerVariants stagger.
                   >
                     {service.description}
                   </motion.p>
@@ -242,43 +235,41 @@ We also offer mentorship programs for tech teams and entrepreneurs.`,
                   <motion.div 
                     className="absolute -bottom-1 -right-1 w-20 h-20 opacity-20" 
                     style={{ 
-                      // transform: "translateZ(-10px)", // Let Framer Motion handle Z
                       background: "linear-gradient(135deg, transparent, rgba(163, 230, 53, 0.3))",
                       borderRadius: "50%",
                       filter: "blur(8px)"
                     }}
-                    initial={{ z: -20, opacity: 0.1 }} // Start further back and less visible
-                    animate={{ z: -10, opacity: 0.2 }} // Bring slightly forward on card visible
+                    initial={{ z: -20, opacity: 0.1 }} 
+                    animate={{ z: -10, opacity: 0.2 }} 
                     transition={{ type: "spring", stiffness: 100, damping: 20 }}
                   />
                   
                   <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(6)].map((_, i) => ( // Increased particle count slightly
+                    {[...Array(6)].map((_, i) => ( 
                       <motion.div
                         key={i}
-                        className="absolute w-1.5 h-1.5 bg-primary rounded-full" // Slightly smaller particles
+                        className="absolute w-1.5 h-1.5 bg-primary rounded-full" 
                         style={{ 
-                          // Let framer motion x,y,z props handle positioning
-                          top: `${Math.random() * 100}%`, // Spread across card height
-                          left: `${Math.random() * 100}%`, // Spread across card width
+                          top: `${Math.random() * 100}%`, 
+                          left: `${Math.random() * 100}%`, 
                         }}
                         initial={{ 
                           opacity: 0,
                           scale: 0.5,
-                          z: Math.random() * 40 - 20 // Varying Z depth
+                          z: Math.random() * 40 - 20 
                         }}
                         animate={{ 
-                          opacity: [0, 0.3, 0.3, 0], // Fade in and out
+                          opacity: [0, 0.3, 0.3, 0], 
                           scale: [0.5, 1, 0.5],
-                          x: Math.random() * 60 - 30, // Random drift horizontally
-                          y: Math.random() * 60 - 30, // Random drift vertically
-                          z: Math.random() * 50 - 25, // Varying Z depth, slightly more range
+                          x: Math.random() * 60 - 30, 
+                          y: Math.random() * 60 - 30, 
+                          z: Math.random() * 50 - 25, 
                         }}
                         transition={{ 
                           duration: 4 + Math.random() * 4,
                           repeat: Infinity,
-                          repeatType: "mirror", // "mirror" for smoother looping
-                          delay: i * 0.3 // Stagger particle animations
+                          repeatType: "mirror", 
+                          delay: i * 0.3 
                         }}
                       />
                     ))}
