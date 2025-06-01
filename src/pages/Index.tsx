@@ -8,7 +8,6 @@ import Services from '../components/Services';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
-import FloatingDesignElements from '../components/FloatingDesignElements';
 
 const Index = () => {
   // Animation on scroll functionality
@@ -41,7 +40,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-dark-blue text-white overflow-x-hidden">
       <ParticleBackground />
-      <FloatingDesignElements />
       <Navbar />
       <Hero />
       <About />
