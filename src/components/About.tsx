@@ -20,7 +20,7 @@ const About: React.FC = () => {
       percentage: 95,
       certifications: [
         { name: "Advanced Web Design Certificate", issuer: "Google Developer", year: "2024" },
-        { name: "Responsive Design Certification", issuer: "freeCodeCamp", year: "2023" }
+        { name: "Responsive Design Certification", issuer: "freeCodeCamp", year: "2024" }
       ]
     },
     { 
@@ -28,7 +28,7 @@ const About: React.FC = () => {
       percentage: 80,
       certifications: [
         { name: "CodeChef 4-Star Rating", issuer: "CodeChef", year: "2024" },
-        { name: "HackerRank Problem Solving (Gold)", issuer: "HackerRank", year: "2023" }
+        { name: "HackerRank Problem Solving (Gold)", issuer: "HackerRank", year: "2024" }
       ]
     },
     { 
@@ -36,7 +36,7 @@ const About: React.FC = () => {
       percentage: 90,
       certifications: [
         { name: "UI/UX Design Specialization", issuer: "Coursera", year: "2024" },
-        { name: "Adobe XD Professional", issuer: "Adobe", year: "2023" }
+        { name: "Adobe XD Professional", issuer: "Adobe", year: "2024" }
       ]
     },
     { 
@@ -44,7 +44,7 @@ const About: React.FC = () => {
       percentage: 92.7,
       certifications: [
         { name: "IoT Developer Certification", issuer: "Microsoft Azure", year: "2024" },
-        { name: "Arduino Programming Expert", issuer: "Arduino Foundation", year: "2023" }
+        { name: "Arduino Programming Expert", issuer: "Arduino Foundation", year: "2024" }
       ]
     },
     { 
@@ -52,16 +52,16 @@ const About: React.FC = () => {
       percentage: 99,
       certifications: [
         { name: "Prompt Engineering for Developers", issuer: "DeepLearning.AI", year: "2024" },
-        { name: "Advanced AI Communication", issuer: "OpenAI", year: "2024" }
+        { name: "Advanced AI Communication", issuer: "OpenAI", year: "2025" }
       ]
     },
   ];
 
   const softSkillsCertifications = [
     { name: "Leadership Excellence Program", issuer: "Harvard Business School", year: "2024" },
-    { name: "Creative Problem Solving", issuer: "Stanford Design School", year: "2023" },
+    { name: "Creative Problem Solving", issuer: "Stanford Design School", year: "2024" },
     { name: "Public Speaking Mastery", issuer: "Toastmasters International", year: "2024" },
-    { name: "Design Thinking Certification", issuer: "IDEO", year: "2023" }
+    { name: "Design Thinking Certification", issuer: "IDEO", year: "2025" }
   ];
 
   const clubs = ["Google Developers Club", "ASPERA", "IEEE"];
