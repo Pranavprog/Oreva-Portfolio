@@ -1,8 +1,10 @@
 
-import React from 'react';
-import { CheckCircle } from 'lucide-react'; // Icon for soft skills
+import React, { useState } from 'react';
+import { CheckCircle, Award, ExternalLink } from 'lucide-react';
 
 const About: React.FC = () => {
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+
   const education = [
     {
       degree: "Bachelor of Engineering (BE)",
@@ -13,17 +15,59 @@ const About: React.FC = () => {
   ];
   
   const skills = [
-    { name: "Web Design", percentage: 95 },
-    { name: "Competitive programming", percentage: 80 },
-    { name: "UI/UX Design", percentage: 90 },
-    { name: "IoT Solutions", percentage: 92.7 },
-    { name: "AI prompting", percentage: 99 },
+    { 
+      name: "Web Design", 
+      percentage: 95,
+      certifications: [
+        { name: "Advanced Web Design Certificate", issuer: "Google Developer", year: "2024" },
+        { name: "Responsive Design Certification", issuer: "freeCodeCamp", year: "2023" }
+      ]
+    },
+    { 
+      name: "Competitive programming", 
+      percentage: 80,
+      certifications: [
+        { name: "CodeChef 4-Star Rating", issuer: "CodeChef", year: "2024" },
+        { name: "HackerRank Problem Solving (Gold)", issuer: "HackerRank", year: "2023" }
+      ]
+    },
+    { 
+      name: "UI/UX Design", 
+      percentage: 90,
+      certifications: [
+        { name: "UI/UX Design Specialization", issuer: "Coursera", year: "2024" },
+        { name: "Adobe XD Professional", issuer: "Adobe", year: "2023" }
+      ]
+    },
+    { 
+      name: "IoT Solutions", 
+      percentage: 92.7,
+      certifications: [
+        { name: "IoT Developer Certification", issuer: "Microsoft Azure", year: "2024" },
+        { name: "Arduino Programming Expert", issuer: "Arduino Foundation", year: "2023" }
+      ]
+    },
+    { 
+      name: "AI prompting", 
+      percentage: 99,
+      certifications: [
+        { name: "Prompt Engineering for Developers", issuer: "DeepLearning.AI", year: "2024" },
+        { name: "Advanced AI Communication", issuer: "OpenAI", year: "2024" }
+      ]
+    },
+  ];
+
+  const softSkillsCertifications = [
+    { name: "Leadership Excellence Program", issuer: "Harvard Business School", year: "2024" },
+    { name: "Creative Problem Solving", issuer: "Stanford Design School", year: "2023" },
+    { name: "Public Speaking Mastery", issuer: "Toastmasters International", year: "2024" },
+    { name: "Design Thinking Certification", issuer: "IDEO", year: "2023" }
   ];
 
   const clubs = ["Google Developers Club", "ASPERA", "IEEE"];
 
   return (
-    <section id="about" className="relative section-padding bg-background"> {/* Updated background */}
+    <section id="about" className="relative section-padding bg-background">
       <div className="container mx-auto">
         <h2 className="section-title text-center mb-16">About Me</h2>
         
@@ -33,7 +77,7 @@ const About: React.FC = () => {
             <div className="solid-dark-card p-6 rounded-xl w-full max-w-sm">
               <div className="w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden border-4 border-primary/30 mx-auto mb-6 shadow-lg">
                 <img 
-                  src="https://i.postimg.cc/g0BmQfff/Whats-App-Image-2025-05-16-at-16-19-43-721f46dd.jpg" // Updated image
+                  src="https://i.postimg.cc/g0BmQfff/Whats-App-Image-2025-05-16-at-16-19-43-721f46dd.jpg"
                   alt="Pranav Kumar"
                   className="w-full h-full object-cover"
                 />
@@ -68,8 +112,8 @@ const About: React.FC = () => {
                 ))}
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 mt-10"> {/* Adjusted gap and mt */}
-                <div> {/* Column for Core Tools / Key Skills */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 mt-10">
+                <div>
                   <div className="mb-6">
                     <p className="section-title-pretext">
                       <span className="icon">✱</span> My Core Tools
@@ -78,31 +122,66 @@ const About: React.FC = () => {
                       Exploring My Technical Stack
                     </h3>
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      I leverage a range of modern tools and technologies to bring ideas to life, focusing on efficient and high-quality development. Here's a look at some of the key areas of my expertise.
+                      Click on any skill to view my certifications and achievements in that area.
                     </p>
                   </div>
 
                   <div className="space-y-5">
                     {skills.map((skill, index) => (
                       <div key={index}>
-                        <div className="flex justify-between mb-1">
-                          <span className="text-gray-300 text-sm font-medium">{skill.name}</span>
-                          <span className="text-primary text-sm font-semibold">{skill.percentage}%</span>
-                        </div>
-                        <div className="h-2.5 bg-muted rounded-full overflow-hidden"> {/* Slightly thicker bar */}
-                          <div 
-                            className="h-full bg-gradient-to-r from-primary to-lime-500 transition-all duration-1000 ease-out"
-                            style={{ width: `${skill.percentage}%` }}
-                          ></div>
-                        </div>
+                        <button
+                          onClick={() => setSelectedSkill(selectedSkill === skill.name ? null : skill.name)}
+                          className="w-full text-left group hover:bg-muted/50 p-3 rounded-lg transition-colors"
+                        >
+                          <div className="flex justify-between mb-1">
+                            <span className="text-gray-300 text-sm font-medium group-hover:text-primary transition-colors">
+                              {skill.name} {selectedSkill === skill.name ? '▼' : '▶'}
+                            </span>
+                            <span className="text-primary text-sm font-semibold">{skill.percentage}%</span>
+                          </div>
+                          <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gradient-to-r from-primary to-lime-500 transition-all duration-1000 ease-out"
+                              style={{ width: `${skill.percentage}%` }}
+                            ></div>
+                          </div>
+                        </button>
+                        
+                        {selectedSkill === skill.name && (
+                          <div className="mt-3 p-4 bg-muted/30 rounded-lg border border-primary/20">
+                            <h5 className="text-primary font-semibold mb-3 flex items-center">
+                              <Award className="w-4 h-4 mr-2" />
+                              Certifications & Achievements
+                            </h5>
+                            <div className="space-y-2">
+                              {skill.certifications.map((cert, certIndex) => (
+                                <div key={certIndex} className="flex items-start space-x-2">
+                                  <ExternalLink className="w-3 h-3 text-primary mt-1 shrink-0" />
+                                  <div className="text-sm">
+                                    <p className="text-gray-200 font-medium">{cert.name}</p>
+                                    <p className="text-gray-400">{cert.issuer} • {cert.year}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div> {/* Column for Soft Skills */}
-                  <h4 className="text-2xl md:text-3xl font-semibold text-primary mb-6 pt-1">Soft Skills & Attributes</h4> {/* Adjusted title and margin */}
-                  <div className="space-y-3.5"> {/* Slightly increased spacing */}
+                <div>
+                  <button
+                    onClick={() => setSelectedSkill(selectedSkill === 'soft-skills' ? null : 'soft-skills')}
+                    className="w-full text-left group hover:bg-muted/50 p-3 rounded-lg transition-colors mb-4"
+                  >
+                    <h4 className="text-2xl md:text-3xl font-semibold text-primary group-hover:text-lime-400 transition-colors">
+                      Soft Skills & Attributes {selectedSkill === 'soft-skills' ? '▼' : '▶'}
+                    </h4>
+                  </button>
+                  
+                  <div className="space-y-3.5">
                     {[
                       "Creative Problem Solving", 
                       "Leadership", 
@@ -116,10 +195,30 @@ const About: React.FC = () => {
                       </div>
                     ))}
                   </div>
+
+                  {selectedSkill === 'soft-skills' && (
+                    <div className="mt-6 p-4 bg-muted/30 rounded-lg border border-primary/20">
+                      <h5 className="text-primary font-semibold mb-3 flex items-center">
+                        <Award className="w-4 h-4 mr-2" />
+                        Leadership & Communication Certifications
+                      </h5>
+                      <div className="space-y-2">
+                        {softSkillsCertifications.map((cert, certIndex) => (
+                          <div key={certIndex} className="flex items-start space-x-2">
+                            <ExternalLink className="w-3 h-3 text-primary mt-1 shrink-0" />
+                            <div className="text-sm">
+                              <p className="text-gray-200 font-medium">{cert.name}</p>
+                              <p className="text-gray-400">{cert.issuer} • {cert.year}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <h4 className="text-2xl font-semibold text-primary mb-3 mt-10">Club Memberships</h4> {/* Adjusted mt */}
+              <h4 className="text-2xl font-semibold text-primary mb-3 mt-10">Club Memberships</h4>
               <div className="flex flex-wrap gap-2">
                 {clubs.map((club, index) => (
                   <span 

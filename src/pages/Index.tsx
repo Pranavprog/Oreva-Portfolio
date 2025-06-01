@@ -8,6 +8,7 @@ import Services from '../components/Services';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
+import ScrollingRocket from '../components/ScrollingRocket';
 
 const Index = () => {
   // Animation on scroll functionality
@@ -40,6 +41,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-dark-blue text-white overflow-x-hidden">
       <ParticleBackground />
+      <ScrollingRocket />
       <Navbar />
       <Hero />
       <About />
