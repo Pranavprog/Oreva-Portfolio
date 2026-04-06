@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, X, Award, Globe, Trophy, Lightbulb, FileCheck, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Award, Globe, Trophy, Lightbulb, FileCheck, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -70,45 +70,29 @@ const achievements: Achievement[] = [
   },
 ];
 
+const HEX_WIDTH = 200;
+const HEX_HEIGHT = HEX_WIDTH * 1.1547; // ratio for regular hexagon (2/√3)
+
 const Achievements: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const { ref: sectionRef, inView } = useInView({ threshold: 0.1, triggerOnce: true });
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const updateScrollButtons = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  // Calculate honeycomb positions for desktop
+  const getHexPositions = (count: number) => {
+    const cols = 4;
+    const xStep = HEX_WIDTH * 0.88;
+    const yStep = HEX_HEIGHT * 0.75;
+    return Array.from({ length: count }, (_, i) => {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const offsetX = row % 2 !== 0 ? xStep / 2 : 0;
+      return { x: col * xStep + offsetX, y: row * yStep };
+    });
   };
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    updateScrollButtons();
-    el.addEventListener('scroll', updateScrollButtons);
-    return () => el.removeEventListener('scroll', updateScrollButtons);
-  }, []);
-
-  // Auto-scroll
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || openIndex !== null) return;
-    let direction = 1;
-    const interval = setInterval(() => {
-      if (!el) return;
-      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 5) direction = -1;
-      if (el.scrollLeft <= 5) direction = 1;
-      el.scrollBy({ left: direction * 1, behavior: 'auto' });
-    }, 30);
-    return () => clearInterval(interval);
-  }, [openIndex]);
-
-  const scroll = (dir: 'left' | 'right') => {
-    scrollRef.current?.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' });
-  };
+  const positions = getHexPositions(achievements.length);
+  const maxX = Math.max(...positions.map(p => p.x)) + HEX_WIDTH;
+  const maxY = Math.max(...positions.map(p => p.y)) + HEX_HEIGHT;
 
   return (
     <section id="achievements" className="section-padding bg-background overflow-hidden">
@@ -130,62 +114,77 @@ const Achievements: React.FC = () => {
           ACHIEVEMENTS
         </motion.h2>
 
-        {/* Scroll container */}
-        <div className="relative group">
-          {/* Nav arrows */}
-          <button
-            onClick={() => scroll('left')}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-primary transition-opacity duration-300 ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            aria-label="Scroll left"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={() => scroll('right')}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-primary transition-opacity duration-300 ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={20} />
-          </button>
-
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto pb-4 px-2 scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {achievements.map((a, i) => (
-              <motion.div
-                key={i}
-                className="flex-shrink-0 w-[280px] cursor-pointer perspective-[1200px]"
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-              >
-                <div
+        {/* Desktop honeycomb grid */}
+        <div className="hidden md:flex justify-center">
+          <div className="relative" style={{ width: maxX, height: maxY }}>
+            {achievements.map((a, i) => {
+              const pos = positions[i];
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute cursor-pointer group/hex"
+                  style={{ left: pos.x, top: pos.y, width: HEX_WIDTH, height: HEX_HEIGHT }}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.5, delay: i * 0.07 }}
                   onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                  className="relative rounded-xl border border-border bg-card/60 backdrop-blur-md p-0 h-[340px] flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.25)] hover:border-primary/40 group/card overflow-hidden"
                 >
-                  {/* Gradient glow top */}
-                  <div className="absolute inset-x-0 top-0 h-[2px] rounded-t-xl bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-10" />
-
-                  {/* Image placeholder */}
-                  <div className="w-full h-[120px] bg-muted flex items-center justify-center text-primary shrink-0">
-                    <div className="flex flex-col items-center gap-1">
-                      {a.icon}
-                      <span className="text-[10px] text-muted-foreground tracking-wider">IMAGE</span>
+                  <div
+                    className="w-full h-full transition-all duration-300 group-hover/hex:scale-110 group-hover/hex:-translate-y-1"
+                    style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
+                  >
+                    {/* Glow border layer */}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-br from-primary/40 via-primary/20 to-primary/40 opacity-0 group-hover/hex:opacity-100 transition-opacity duration-300"
+                      style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
+                    />
+                    {/* Inner content */}
+                    <div
+                      className="absolute inset-[3px] bg-card/80 backdrop-blur-md flex flex-col items-center justify-center text-center px-4 py-6 transition-shadow duration-300 group-hover/hex:shadow-[0_8px_30px_-6px_hsl(var(--primary)/0.3)]"
+                      style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
+                    >
+                      <div className="text-primary mb-1">{a.icon}</div>
+                      <h3 className="text-xs font-heading font-semibold text-foreground leading-tight mb-0.5 px-1">{a.title}</h3>
+                      <span className="text-[9px] text-muted-foreground tracking-widest">{a.year}</span>
                     </div>
                   </div>
-
-                  <div className="flex flex-col items-center justify-center flex-1 px-5 py-4">
-                    <span className="text-xs font-medium text-muted-foreground mb-1 tracking-widest">{a.year}</span>
-                    <h3 className="text-base font-heading font-semibold text-foreground mb-1.5 leading-tight">{a.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{a.description}</p>
-                    <span className="mt-3 text-xs text-primary/70 tracking-wide">Click to read more</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
+        </div>
+
+        {/* Mobile: vertical stack of hexagons */}
+        <div className="flex md:hidden flex-col items-center gap-4">
+          {achievements.map((a, i) => (
+            <motion.div
+              key={i}
+              className="cursor-pointer group/hex"
+              style={{ width: 180, height: 180 * 1.1547 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
+              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+            >
+              <div
+                className="w-full h-full relative transition-all duration-300 group-hover/hex:scale-105"
+                style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
+              >
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-primary/30 to-primary/10"
+                  style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
+                />
+                <div
+                  className="absolute inset-[3px] bg-card/80 backdrop-blur-md flex flex-col items-center justify-center text-center px-4"
+                  style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
+                >
+                  <div className="text-primary mb-1">{a.icon}</div>
+                  <h3 className="text-xs font-heading font-semibold text-foreground leading-tight mb-0.5">{a.title}</h3>
+                  <p className="text-[9px] text-muted-foreground">{a.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* Book-open detail overlay */}
@@ -208,7 +207,6 @@ const Achievements: React.FC = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="rounded-2xl border border-border bg-card p-8 shadow-[0_20px_60px_-12px_hsl(var(--primary)/0.2)]">
-                  {/* Close */}
                   <button
                     onClick={() => setOpenIndex(null)}
                     className="absolute top-4 right-4 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-border transition-colors"
@@ -227,7 +225,6 @@ const Achievements: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Divider */}
                   <div className="h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent mb-5" />
 
                   <motion.p
