@@ -277,3 +277,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #5a687e;
 }
+
+/* Hide scrollbar utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
