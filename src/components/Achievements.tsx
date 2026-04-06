@@ -163,21 +163,25 @@ const Achievements: React.FC = () => {
               >
                 <div
                   onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                  className="relative rounded-xl border border-border bg-card/60 backdrop-blur-md p-6 h-[300px] flex flex-col items-center justify-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.25)] hover:border-primary/40 group/card"
+                  className="relative rounded-xl border border-border bg-card/60 backdrop-blur-md p-0 h-[340px] flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.25)] hover:border-primary/40 group/card overflow-hidden"
                 >
                   {/* Gradient glow top */}
-                  <div className="absolute inset-x-0 top-0 h-[2px] rounded-t-xl bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-x-0 top-0 h-[2px] rounded-t-xl bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-10" />
 
                   {/* Image placeholder */}
-                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4 text-primary border border-border group-hover/card:border-primary/40 transition-colors duration-300">
-                    {a.icon}
+                  <div className="w-full h-[120px] bg-muted flex items-center justify-center text-primary shrink-0">
+                    <div className="flex flex-col items-center gap-1">
+                      {a.icon}
+                      <span className="text-[10px] text-muted-foreground tracking-wider">IMAGE</span>
+                    </div>
                   </div>
 
-                  <span className="text-xs font-medium text-muted-foreground mb-2 tracking-widest">{a.year}</span>
-                  <h3 className="text-lg font-heading font-semibold text-foreground mb-2 leading-tight">{a.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{a.description}</p>
-
-                  <span className="mt-4 text-xs text-primary/70 tracking-wide">Click to read more</span>
+                  <div className="flex flex-col items-center justify-center flex-1 px-5 py-4">
+                    <span className="text-xs font-medium text-muted-foreground mb-1 tracking-widest">{a.year}</span>
+                    <h3 className="text-base font-heading font-semibold text-foreground mb-1.5 leading-tight">{a.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{a.description}</p>
+                    <span className="mt-3 text-xs text-primary/70 tracking-wide">Click to read more</span>
+                  </div>
                 </div>
               </motion.div>
             ))}
